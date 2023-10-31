@@ -13,17 +13,22 @@
 import SwiftUI
 
 struct CardView: View {
-    let scrum: DailyScrum
+    let scrum: DailyScrum   // DailyScrum 타입 상수 scrum 선언
+    
     var body: some View {
-        VStack(alignment: .leading){
+        VStack(alignment: .leading){    // Text 시작점 정렬
             Text(scrum.title)
                 .font(.headline)
+                .accessibilityAddTraits(.isHeader)  // 스크럼 제목을 읽고 "헤딩"을 따라 뷰의 정보 아키텍처를 전달하는데 도움이 됨
             Spacer()
             HStack{
                 Label("\(scrum.attendees.count)", systemImage: "person.3")
+                    .accessibilityLabel("\(scrum.attendees.count) attendees")   //  어떤 Label인지 설명 "N attendees" (Label)
                 Spacer()
                 Label("\(scrum.IengthInMinutes)", systemImage: "clock")
-                    .padding(.trailing, 20)
+                    .accessibilityLabel("\(scrum.IengthInMinutes) minute meeting")  //  어떤 Label인지 설명 "M minute meeting" (Label)
+
+                    .labelStyle(.trailingIcon)
             }
             .font(.caption)
             
@@ -35,10 +40,12 @@ struct CardView: View {
 
 
 struct CardView_Previews: PreviewProvider{
+    // DailyScrum 샘플 데이터 중 첫번째 dailyscrum. dailyscrum은 구조체
+    // DailyScrum 타입 정적 변수 scrum을 생성한 후, CardView의 초기값으로 넣어줌
     static var scrum = DailyScrum.sampleData[0]
     static var previews: some View{
         CardView(scrum: scrum)
             .background(scrum.theme.mainColor)
-            .previewLayout(.fixed(width: 400, height: 60))
+            .previewLayout(.fixed(width: 400, height: 60))  // 미리보기 뷰 크기 지정
     }
 }
